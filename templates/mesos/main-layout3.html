@@ -1,0 +1,124 @@
+{% extends "mesos/navbar-layout.html" %}
+</head>
+<body class="nav-md">
+<div id='wrapper'>
+   <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+
+     <ul class="nav navbar-top-links navbar-right">
+      <li class="dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+             <i class="fa fa-user fa-fw"></i> 
+             <i class="fa fa-caret-down"></i>
+        </a>
+        <ul class="dropdown-menu dropdown-user">
+             <li><a data-toggle="modal" data-target="#userModal" id="userinfo"><i class="fa fa-user fa-fw"></i> 用户信息</a>
+                        </li>
+              <li><a herf="javascript:"><i class="fa fa-gear fa-fw"></i> 设置</a>
+                        </li>
+              <li class="divider"></li>
+              <li><a href="/hd_mesos/logout"><i class="fa fa-sign-out fa-fw"></i> 退出</a>
+                        </li>
+         </ul>
+      </li>
+    </ul>
+          <div>
+      <p class="navbar-text navbar-right">{{request.session.is_login}}</p>
+      </div>
+     <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+   </nav>
+   <div id="page-wrapper">
+     	{% block content %}
+		{% endblock %}
+   </div>
+               <!-- 模态框（Modal） -->  
+            <div class="modal fade" id="userModal" tabindex="-1" role="dialog">  
+                <div class="modal-dialog">  
+                    <div class="modal-content">  
+                        <div class="modal-header">  
+                            <button type="button" class="close" data-dismiss="modal">  
+                  ×  
+            </button>  
+                        </div>
+                   <form id="useredit" role="form" method="post" action="useredit" class="form-horizontal">
+							{% csrf_token %}  
+                        <div class="modal-body col-md-12 col-md-offset-1">
+                        	<div class="form-group">
+								<label for="username" class="col-md-2 control-label">用户名</label>
+								 <div class="col-md-6">
+								 <input class="form-control" name="Username" id="username" readonly="readonly"> </div>
+						     </div>
+						 <div class="form-group">
+								<label for="nickname" class="col-md-2 control-label">昵称</label>
+								 <div class="col-md-6">
+								 <input class="form-control" name="Nickname" id="nickname" required data-msg-required="请输入昵称"> 
+								 </div>
+						 </div>
+	                   <div class="form-group">
+								<label for="password" class="col-md-2 control-label">密码</label>
+								 <div class="col-md-6">
+								 <input class="form-control" placeholder="Password" name="Password" id="password" type="password" rangelength="6,12"> 
+								 </div>
+						</div>
+				        <div class="form-group">
+								<label for="confirmpass" class="col-md-2 control-label">确认密码</label>
+								 <div class="col-md-6">
+								 <input class="form-control" placeholder="Confirm Password" name="Confirmpass" id="confirmpass" type="Password" equalTo="#password" data-msg-equalTo="两次密码不相同"> 
+								 </div>
+						</div>
+						</div>
+                        <div class="modal-footer">  
+                            <button type="button" class="btn btn-default" data-dismiss="modal" id="dataclose">关闭  
+            </button>  
+                            <button type="submit" class="btn btn-primary" id="usersubmit">  
+               保存
+            </button>  
+                        </div>
+                   </form>
+                    </div>  
+                    <!-- /.modal-content -->  
+                </div>  
+       </div>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.js"></script>
+<script src="/static/metisMenu/metisMenu.min.js"></script>
+<script src="/static/jquery-validate/jquery.validate.js"></script>
+<script src="/static/jquery-validate/messages_zh.js"></script>
+<!--<script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script>
+function MoveOption(unselect,select){
+	var option = $(unselect+" option:selected");
+	option.clone().appendTo(select);
+	option.remove();
+};
+function formsubmit(formname,sel_list){
+//jquery.validate
+$(formname).validate({
+	 submitHandler: function() {
+		 for (i in sel_list){
+		   $(sel_list[i]+" option").each(function(){
+	        	 $(this).prop({"selected":true});
+	         });
+		 }
+	    form.submit();
+	   },
+	onfocusout: function(element) { $(element).valid(); },
+});
+}
+//配置错误提示的节点，默认为label，这里配置成 span （errorElement:'span'）
+$.validator.setDefaults({
+	errorElement:'span',
+});
+</script>
+{% block js %} {% endblock %}
+<script src="/static/js/handu.js"></script>
+<script src="/static/js/custom.js"></script>
+</body>
+</html>

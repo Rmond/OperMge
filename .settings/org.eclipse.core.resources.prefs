@@ -1,0 +1,13 @@
+eclipse.preferences.version=1
+encoding//hd_ansible/software/softview.py=utf-8
+encoding//hd_ansible/tasks.py=utf-8
+encoding//hd_ansible/urls.py=utf-8
+encoding//hd_ansible/views.py=utf-8
+encoding//hd_mesos/task_res_format.py=utf-8
+encoding//hd_mesos/tasks.py=utf-8
+encoding//hd_mesos/urls.py=utf-8
+encoding//hd_mesos/views.py=utf-8
+encoding//hd_mysql/models.py=utf-8
+encoding//hd_mysql/tasks.py=utf-8
+encoding//hd_mysql/urls.py=utf-8
+encoding//hd_mysql/views.py=utf-8

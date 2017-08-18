@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
+<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+<title>HanDu Automation Platforms</title>
+<!-- Bootstrap -->
+<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/metisMenu/metisMenu.min.css" rel="stylesheet">
+<link href="/static/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+{% block css%} {% endblock %}
+<link rel="stylesheet" type="text/css" href="/static/css/handu.css">
+<link rel="stylesheet" type="text/css" href="/static/css/custom.css">
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="nav-md">
+  <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <!-- menu profile quick info -->
+            <div class="profile clearfix">
+              <div class="profile_pic">
+                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+              </div>
+              <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>John Doe</h2>
+              </div>
+            </div>
+            <!-- /menu profile quick info -->
+
+            <br />
+
+            <!-- sidebar menu -->
+            <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+              <div class="menu_section">
+                <h3>General</h3>
+                <ul class="nav side-menu">
+                      <li>
+                            <a href="/hd_mesos/index.html"><i class="fa fa-dashboard fa-fw"></i> 仪表盘</a>
+                        </li>
+                         <li>
+                            <a href="/hd_mesos/userlist.html"><i class="fa fa-user fa-fw"></i>用户管理</a>
+                        </li>
+                         <li>
+                            <a href="/hd_mesos/privilegelist.html"><i class="fa fa-pencil fa-fw"></i>权限分配</a>
+                        </li>
+                         <li>
+                            <a href="/hd_mesos/tasklist.html"><i class="fa fa-tasks fa-fw"></i>任务列表</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-server fa-fw"></i> 服务器<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li>
+                                    <a href="/hd_mesos/hostlist.html">主机列表</a>
+                                </li>
+                                <li>
+                                    <a href="/hd_mesos/hostgroups.html">主机组列表</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                      <li>
+                            <a href="#"><i class="fa fa-retweet fa-fw"></i> Ansible<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                            	<li>
+                                    <a href="/hd_ansible/inventory/inventorymge">清单管理<span class="fa arrow"></span></a>
+                               </li>
+                                <li>
+                                    <a href="#">软件管理<span class="fa arrow"></span></a>
+                                      <ul class="nav nav-third-level collapse">
+                                     <li>
+                                       <a href="/hd_ansible/software/install">软件安装</a>
+                                       <a href="/hd_ansible/software/update">软件升级</a>
+                                       <a href="/hd_ansible/software/unstall">软件删除</a>
+                                     </li>
+                                     </ul>
+                               </li>
+                               <li>
+                                    <a href="#">YUM管理<span class="fa arrow"></span></a>
+                                      <ul class="nav nav-third-level collapse">
+                                     <li>
+                                       <a href="/hd_ansible/yum/manage/install">Yum软件安装</a>
+                                       <a href="/hd_ansible/yum/manage/update">Yum软件升级</a>
+                                       <a href="/hd_ansible/yum/manage/delete">Yum软件删除</a>
+                                     </li>
+                                     </ul>
+                               </li>
+                               <li>
+                                    <a href="#">Mysql<span class="fa arrow"></span></a>
+                                      <ul class="nav nav-third-level collapse">
+                                     <li>
+                                      <a href="/hd_ansible/mysql/sidlist">Mysql实例列表</a>
+                                       <a href="/hd_ansible/mysql/prilist">授权记录</a>
+                                       <a href="/hd_ansible/mysql/userpri">用户授权</a>
+                                       <a href="/hd_ansible/mysql/optlog">操作日志</a>
+                                     </li>
+                                     </ul>
+                               </li>
+                                <li>
+                                    <a href="#">Tomcat<span class="fa arrow"></span></a>
+                                    <ul class="nav nav-third-level collapse">
+                                     <li>
+                                       <a href="/hd_ansible/tomcat/projectdev">项目部署</a>
+                                       <a href="/hd_ansible/tomcat/rollback">历史版本回滚</a>
+                                     </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                       <!-- Demo  FenGe-->
+                        <li>
+                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Sample Pages<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level collapse">
+                                <li>
+                                    <a href="blank.html">Blank Page</a>
+                                </li>
+                                <li>
+                                    <a href="login.html">Login Page</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li></li>
+                </ul>
+              </div>
+            </div>
+            <!-- /sidebar menu -->
+
+          </div>
+        </div>
+        
+      </div>
+    </div>
+     	{% block content %}
+		{% endblock %}
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.js"></script>
+<script src="/static/metisMenu/metisMenu.min.js"></script>
+<script src="/static/jquery-validate/jquery.validate.js"></script>
+<script src="/static/jquery-validate/messages_zh.js"></script>
+<!--<script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+{% block js %} {% endblock %}
+<script src="/static/js/handu.js"></script>
+<script src="/static/js/custom.js"></script>
+</body>
+</html>
