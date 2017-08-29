@@ -80,7 +80,7 @@ def Logout(request):
     return redirect('/hd_mesos/login')
 
 @login_check 
-def UserList(request):#用户列表展示
+def user_list(request):#用户列表展示
     results = Users.objects.all()
     return render(request,"mesos/userlist.html",{'users':results})
 

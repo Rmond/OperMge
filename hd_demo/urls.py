@@ -16,14 +16,15 @@ Including another URLconf
 from django.conf.urls import url, include
 #from django.contrib import admin
 from rest_framework import routers
+from rest_framework.urlpatterns import format_suffix_patterns
+from hd_demo import views
 
 #router = routers.DefaultRouter()
 #router.register(r'users', views.user_list)
 
 urlpatterns = [
-    url(r'^api/', include('hd_demo.urls')),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^hd_mesos/', include('hd_mesos.urls',namespace="hd_mesos")),
-    url(r'^hd_ansible/', include('hd_ansible.urls',namespace="hd_ansible")),
-    url(r'^hd_mysql/', include('hd_mysql.urls',namespace="hd_mysql")),
+    url(r'users$',views.user_list),
+    url(r'users/(?P<username>[\w]+)$', views.user_detail),
 ]
+urlpatterns = format_suffix_patterns(urlpatterns)
+

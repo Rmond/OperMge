@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import json,datetime,time,re
+import json,datetime,time,re,xlrd,os
 from django.shortcuts import render,redirect
 
 from hd_mesos.views import login_check,user_role
@@ -456,6 +456,7 @@ def sql_exec(request):
         login_user = request.POST["Login_user"]
         login_pass = request.POST["Login_pass"]
         sql_handle=Sql_Info.objects.get(sql_name=sqlname).sql_handle
+        time.sleep(3)
         ansinle_cmd = "ansible "+hostip+" -m shell -a \"source /etc/profile&&mysql -h127.0.0.1 -u"+login_user+" -p"+login_pass+" -P"+login_port+" -e '"+sql_handle+"'\""
         return HttpResponse(json.dumps(ansinle_cmd))
     elif request.method == 'GET':
@@ -490,6 +491,31 @@ def argcount_get(request):
         except Sql_Info.DoesNotExist:
             argcount = 0
         return HttpResponse(argcount)
+    
+@csrf_exempt
+@login_check
+def sql_import(request):
+    if request.method == "POST":
+        f = request.FILES.get('xlsname')
+        filename = os.path.join("D:\\",f.name)
+        with open(filename,'wb') as fobj:
+            for chunck in f.chunks():
+                fobj.write(chunck)
+        xlsfile = xlrd.open_workbook(filename)#打开文件
+        xlstable = xlsfile.sheet_by_index(0)#定位到第一张表
+        rowscount = xlstable.nrows#获取行数
+        for num in range(1,rowscount):
+            sql_name = xlstable.row_values(num)[0]
+            sql_handle = xlstable.row_values(num)[1]
+            arg_count = len(re.findall(r'(?={\d+})',sql_handle))
+            try:
+                sqlinfo = Sql_Info.objects.get(sql_name=sql_name)
+                sqlinfo.sql_handle = sql_handle
+                sqlinfo.arg_count = arg_count
+            except Sql_Info.DoesNotExist:
+                sqlinfo = Sql_Info(sql_name=sql_name,sql_handle = sql_handle,arg_count = arg_count)
+            sqlinfo.save()
+        return redirect('/hd_mysql/sqllist')
 
 @csrf_exempt
 @login_check

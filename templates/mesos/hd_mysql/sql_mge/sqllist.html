@@ -19,7 +19,7 @@
                         <div class="panel-body">                 
                             <table width="100%" class="table table-striped table-bordered table-hover" id="shdlist">
                           <a class="btn btn-sm btn-primary-outline" href="{% url 'hd_mysql:sql_add' %}"><i class="fa fa-plus"></i>添加SQL语句</a>
-                          <a class="btn btn-sm btn-primary-outline" data-toggle="modal" data-target="#sqlimp"><i class="fa fa-cloud-upload"></i> 导入SQL语句</a>
+                          <a class="btn btn-sm btn-primary-outline" data-toggle="modal" data-target="#sqlimp_div"><i class="fa fa-cloud-upload"></i> 导入SQL语句</a>
                                 <thead>
                                     <tr>
                                         <th>序号</th>
@@ -53,13 +53,13 @@
             </div>
             <!-- /.row --> 
 <!-- hostimport -->
-            <div class="modal fade" id="sqlimp" tabindex="-1" role="dialog">  
+            <div class="modal fade" id="sqlimp_div" tabindex="-1" role="dialog">  
                 <div class="modal-dialog">  
                     <div class="modal-content">  
                         <div class="modal-header">  
                             <button type="button" class="close" data-dismiss="modal">×</button>  
                         </div>
-                   <form id="sqlimp" role="form" method="post" enctype="multipart/form-data" action="sqlimp" class="form-horizontal">
+                   <form id="sqlimp" role="form" method="post" enctype="multipart/form-data" action="{% url 'hd_mysql:sql_import' %}" class="form-horizontal">
 							{% csrf_token %}  
                         <div class="modal-body">
                         <label>导入文件:</label>
@@ -136,16 +136,16 @@
             } 
         } );
     });
-  //IP地址
-    jQuery.validator.addMethod("hostip", function (value, element) {
-    	//var mail = /^[a-z0-9._%-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
-    	var hostip = /^((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/;
-    	return this.optional(element) || hostip.test(value);
-    }, "请输入正确的IP地址");
+   $("#sqlimp").validate({
+	    submitHandler: function() {
+	    	form.submit();
+	   },
+	    onfocusout: function(element) { $(element).valid(); },
+	});
    jQuery.validator.addMethod("filext", function (value, element) {
-    	//var mail = /^[a-z0-9._%-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
-    	var filext = /^.xls|.xlsx$/;
-    	return this.optional(element) || filext.test(value);
-    }, "只允许导入excel文件");
+		//var mail = /^[a-z0-9._%-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
+		var filext = /^.xls|.xlsx$/;
+		return this.optional(element) || filext.test(value);
+	}, "只允许导入excel文件");
 </script>
 {% endblock %}

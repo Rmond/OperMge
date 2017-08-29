@@ -154,7 +154,7 @@
         }
     } );
       $('#user-info tbody').on( 'click', 'a.delete', function () {
-    	  if (confirm("确定要删除该属性？")) {
+    	  if (confirm("确定要删除该用户？")) {
     		  var username = $(this).parents('tr').children().eq(1).text();
 			  $.ajax(
 						{type: "POST",

@@ -58,7 +58,7 @@
 					</div>
 					<div class="form-group">
 						<label>被授权登录密码</label> <input class="form-control" name="password" type="password"
-							required data-msg-required="请输入被授权登录密码">
+							required data-rule-regexPassword="true" data-msg-required="请输入被授权登录密码">
 					</div>
 					<div class="form-group">
 						<label>被授权主机IP</label> <input class="form-control"
@@ -169,5 +169,10 @@
 	   $.ajaxSetup({async:true});
 	   return result;
 	},"只允许主库添加授权用户");
+jQuery.validator
+	.addMethod(
+			"regexPassword", function(value, element) {  
+			    return this.optional(element) || /^(?=^.{8,}$)(?=.*\d)(?=.*\W+)(?=.*[A-Z])(?=.*[a-z]).*$/.test(value);  
+			}, "密码长度至少8位且必须包含数字大小写字符及特殊字符");
 </script>
 {% endblock %}

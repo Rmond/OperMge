@@ -3,6 +3,7 @@ encoding//hd_ansible/software/softview.py=utf-8
 encoding//hd_ansible/tasks.py=utf-8
 encoding//hd_ansible/urls.py=utf-8
 encoding//hd_ansible/views.py=utf-8
+encoding//hd_demo/views.py=utf-8
 encoding//hd_mesos/task_res_format.py=utf-8
 encoding//hd_mesos/tasks.py=utf-8
 encoding//hd_mesos/urls.py=utf-8

@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^login',views.Login),
     url(r'^index',views.index),
     url(r'^logout$',views.Logout),
-    url(r'^userlist',views.UserList),
+    url(r'^userlist',views.user_list),
     url(r'^useradd',views.UserAdd),
     url(r'^pwdreset',views.PwdReset),
     url(r'^userdel',views.UserDel),

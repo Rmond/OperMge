@@ -19,6 +19,7 @@ class Users(models.Model):
     nickname = models.CharField(max_length=16)
     password = models.CharField(max_length=128)
     role = models.PositiveSmallIntegerField(default=1)
+    
 
 class HostGroup(models.Model):
     id = models.AutoField(primary_key=True)

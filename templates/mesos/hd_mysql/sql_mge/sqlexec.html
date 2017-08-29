@@ -30,7 +30,7 @@
 					<div class="form-group">
 						<label class="col-md-4 control-label">IP地址</label>
 						<div class="col-md-8">
-						<input class="form-control" name="HostIP" id="hostip" required data-msg-required="请输入数据库IP">
+						<input class="form-control" name="HostIP" id="hostip" required data-rule-hostip="true" data-msg-required="请输入数据库IP">
 					 </div>
 					</div>
 					<div class="form-group">
@@ -65,11 +65,13 @@
 				</div>
 				</div>
 				<div class="panel-footer text-center">
-					<button type="submit" class="btn btn-success">执行</button>
+					<button type="submit" class="btn btn-success" id="submit">执行</button>
 				</div>
 				</form>
 		</div>
 	</div>
+</div>
+<div>
 </div>
 {% endblock %} 
 {% block js%}
@@ -97,14 +99,21 @@ $(function(){
 				{type: "POST",
 				  url: "/hd_mysql/sqlexecres",
 			      data: data,
-			      async: false, //同步请求，默认情况下是异步（true）
 			      beforeSend: function(){
-			    	  $("loading").show();
+			    	  $("#submit").attr("disabled", true);
+			    	  $("#sqlexecres").val("正在执行,请稍后...");
 			      },
 			      success: function(data)	{
-			    	 var obj = eval('(' + data + ')');
-			    	$("#sqlexecres").val(obj.join("\n"));  
-			        }
+			    	var obj = eval('(' + data + ')');
+			    	$("#sqlexecres").val(obj.join("\n"));
+			    	//$("#sqlexecres").val(data);
+			        },
+			      complete:function(){
+			    	  $("#submit").attr("disabled", false);
+			      },
+			      error:function(){
+			    	  $("#submit").attr("disabled", false);
+			      },
 						});
 	}
 });
@@ -149,5 +158,11 @@ jQuery.validator.addMethod("sqlname", function (value, element) {
 	   $.ajaxSetup({async:true});
 	   return result;
 }, "SQL不存在!");
+//IP地址
+jQuery.validator.addMethod("hostip", function (value, element) {
+	//var mail = /^[a-z0-9._%-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
+	var hostip = /^((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$/;
+	return this.optional(element) || hostip.test(value);
+}, "请输入正确的IP地址");
 </script>
  {% endblock %}

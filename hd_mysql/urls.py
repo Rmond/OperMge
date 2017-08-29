@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^sqlexecres$',views.sql_exec,name="sql_exec_res"),
     url(r'^sqlnameget$',views.sqlname_get,name="sqlname_get"),
     url(r'^sqlnamecheck$',views.sqlname_check,name="sqlname_check"),
+    url(r'^sqlimp$',views.sql_import,name="sql_import"),
     url(r'^argcountget$',views.argcount_get,name="argcount_get"),
     url(r'^mysqldump$',views.mysql_dump),
     url(r'^schedulelist$',views.schedule_list),
