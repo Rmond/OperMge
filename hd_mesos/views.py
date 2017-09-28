@@ -24,7 +24,7 @@ def login_check(func):#登录检查装饰器
     return wrapper
 
 def user_role(func):#用户角色检查装饰器
-    def aaaaa(request,*args,**kwargs):
+    def wrapper(request,*args,**kwargs):
         role = request.session.get('role',None)
         tempath = ""
         if role == 0:#管理员
@@ -32,7 +32,7 @@ def user_role(func):#用户角色检查装饰器
         elif role == 1:#普通用户
             tempath="mesos/custom/"
         return func(request,tempath)
-    return aaaaa
+    return wrapper
              
 # Create your views here.
 @csrf_exempt
@@ -271,16 +271,6 @@ def HostDetailInfo(request):#主机详细信息展示
         HostIP = request.POST['HostIP']
         hostinfo = HostInfo.objects.get(ip=HostIP)
     return render(request,{'hostinfo':hostinfo})
-
-@csrf_exempt
-@login_check
-def CheckHostIP(request):#添加主机前，判断主机是否存在
-    if request.method == 'POST':
-        HostIP = request.POST['HostIP']
-        if HostInfo.objects.filter(ip=HostIP):
-            return HttpResponse(0)
-        else:
-            return HttpResponse(1)
 
 @login_check
 def GroupAdd(request):

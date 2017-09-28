@@ -99,59 +99,56 @@ def sid_add(request):
                 slave_mysql_version = j
         mhost = HostInfo.objects.get(ip=request.POST["Mhostip"])
         shost = HostInfo.objects.get(ip=request.POST["Shostip"])
-        if mhost.idle and shost.idle:
-            mhost.idle = False
-            shost.idle = False
-            mhost.save()
-            shost.save()
-            if master_mysql_version == slave_mysql_version:  # 比较版本信息            
-                if "mysql-5.6" in master_mysql_version:
-                    initshell = "/usr/local/mysql/scripts/mysql_install_db"
-                elif "mysql-5.7" in master_mysql_version:
-                    initshell = "/usr/local/mysql/bin/mysqld --initialize-insecure"
-                mport = Hostip_Port.objects.get(hostip=request.POST["Mhostip"]).port
-                sport = Hostip_Port.objects.get(hostip=request.POST["Shostip"]).port
-                mhostip_end = request.POST["Mhostip"].split(".")[-1].zfill(3) 
-                shostip_end = request.POST["Shostip"].split(".")[-1].zfill(3)
-                mextra_vars["sid"] = request.POST["AppName"] + "_M_" + mhostip_end + str(mport)
-                mextra_vars["hosts"] = request.POST["Mhostip"]
-                mextra_vars["flag_fact"] = True
-                mextra_vars["role"] = "mysql_M_instance"
-                mextra_vars["option"] = "install.yml"
-                mextra_vars["port"] = mport
-                mextra_vars["sid_init"] = initshell + " --datadir=/mysql_data/" + mextra_vars["sid"] + "/data"
-                mextra_vars["serverid"] = request.POST["Mhostip"].split(".")[-1] + str(mport)
-                mextra_vars["password"] = make_password(time.time())[-20:]
-                mextra_vars["repluser"] = "repl@" + request.POST["Shostip"]
-                mextra_vars["replpassword"] = make_password(time.time())[-20:]
-                mextra_vars["data_size"] = request.POST["LvSize"]
-                mextra_vars["buffer_pool"] = request.POST["Bf_Pool"]
-                sextra_vars["sid"] = request.POST["AppName"] + "_S_" + shostip_end + str(sport)
-                sextra_vars["hosts"] = request.POST["Shostip"]
-                sextra_vars["flag_fact"] = True
-                sextra_vars["role"] = "mysql_S_instance"
-                sextra_vars["option"] = "install.yml"
-                sextra_vars["port"] = sport
-                sextra_vars["sid_init"] = initshell + " --datadir=/mysql_data/" + sextra_vars["sid"] + "/data"
-                sextra_vars["serverid"] = request.POST["Shostip"].split(".")[-1] + str(sport)
-                sextra_vars["password"] = mextra_vars["password"]
-                sextra_vars["replpassword"] = mextra_vars["replpassword"]
-                sextra_vars["masterhost"] = mextra_vars["hosts"]
-                sextra_vars["masterport"] = mextra_vars["port"]
-                sextra_vars["data_size"] = request.POST["LvSize"]
-                sextra_vars["buffer_pool"] = request.POST["Bf_Pool"]
-                startime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
-                username = request.session.get("username", None)
-                request.session['mextra_vars'] = mextra_vars
-                request.session['sextra_vars'] = sextra_vars
-                # taskobj = sid_init.apply_async([mextra_vars,sextra_vars])
-                # user_task = User_Task(username_id = username,star_time = startime,taskid=taskobj.id,hosts=request.POST["Mhostip"]+":"+request.POST["Shostip"],taskname="repl_create")
-                # user_task.save()
-                return redirect('/hd_mesos/tasklist.html')
-            else:
-                return render(request, "mesos/ansible/mysql/sidlist.html", {"error":"实例创建失败，主从版本不一致！"})
+        mhost.idle = False
+        shost.idle = False
+        mhost.save()
+        shost.save()
+        if master_mysql_version == slave_mysql_version:  # 比较版本信息            
+            if "mysql-5.6" in master_mysql_version:
+                initshell = "/usr/local/mysql/scripts/mysql_install_db"
+            elif "mysql-5.7" in master_mysql_version:
+                initshell = "/usr/local/mysql/bin/mysqld --initialize-insecure"
+            mport = Hostip_Port.objects.get(hostip=request.POST["Mhostip"]).port
+            sport = Hostip_Port.objects.get(hostip=request.POST["Shostip"]).port
+            mhostip_end = request.POST["Mhostip"].split(".")[-1].zfill(3) 
+            shostip_end = request.POST["Shostip"].split(".")[-1].zfill(3)
+            mextra_vars["sid"] = request.POST["AppName"] + "_M_" + mhostip_end + str(mport)
+            mextra_vars["hosts"] = request.POST["Mhostip"]
+            mextra_vars["flag_fact"] = True
+            mextra_vars["role"] = "mysql_M_instance"
+            mextra_vars["option"] = "install.yml"
+            mextra_vars["port"] = mport
+            mextra_vars["sid_init"] = initshell + " --datadir=/mysql_data/" + mextra_vars["sid"] + "/data"
+            mextra_vars["serverid"] = request.POST["Mhostip"].split(".")[-1] + str(mport)
+            mextra_vars["password"] = make_password(time.time())[-20:]
+            mextra_vars["repluser"] = "repl@" + request.POST["Shostip"]
+            mextra_vars["replpassword"] = make_password(time.time())[-20:]
+            mextra_vars["data_size"] = request.POST["LvSize"]
+            mextra_vars["buffer_pool"] = request.POST["Bf_Pool"]
+            sextra_vars["sid"] = request.POST["AppName"] + "_S_" + shostip_end + str(sport)
+            sextra_vars["hosts"] = request.POST["Shostip"]
+            sextra_vars["flag_fact"] = True
+            sextra_vars["role"] = "mysql_S_instance"
+            sextra_vars["option"] = "install.yml"
+            sextra_vars["port"] = sport
+            sextra_vars["sid_init"] = initshell + " --datadir=/mysql_data/" + sextra_vars["sid"] + "/data"
+            sextra_vars["serverid"] = request.POST["Shostip"].split(".")[-1] + str(sport)
+            sextra_vars["password"] = mextra_vars["password"]
+            sextra_vars["replpassword"] = mextra_vars["replpassword"]
+            sextra_vars["masterhost"] = mextra_vars["hosts"]
+            sextra_vars["masterport"] = mextra_vars["port"]
+            sextra_vars["data_size"] = request.POST["LvSize"]
+            sextra_vars["buffer_pool"] = request.POST["Bf_Pool"]
+            startime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+            username = request.session.get("username", None)
+            request.session['mextra_vars'] = mextra_vars
+            request.session['sextra_vars'] = sextra_vars
+            # taskobj = sid_init.apply_async([mextra_vars,sextra_vars])
+            # user_task = User_Task(username_id = username,star_time = startime,taskid=taskobj.id,hosts=request.POST["Mhostip"]+":"+request.POST["Shostip"],taskname="repl_create")
+            # user_task.save()
+            return redirect('/hd_mesos/tasklist.html')
         else:
-            return redirect("/hd_ansible/mysql/sidlist/"+"当前主机有其他任务，请稍等！".decode('utf-8'))
+            return render(request, "mesos/ansible/mysql/sidlist.html", {"error":"实例创建失败，主从版本不一致！"})
         
 @csrf_exempt
 @login_check
@@ -181,16 +178,13 @@ def sid_update(request):
         sidinfo_set = SidInfo.objects.filter(appname=appname)
         for sidinfo in sidinfo_set:
             host = HostInfo.objects.get(ip=sidinfo.hostip)
-            if host.idle:
-                host.idle=False
-                host.save()
-                if 'M' in sidinfo.sidname.replace(sidinfo.appname,""):
-                    mextra_vars=extra_var_create(host, mextra_vars, "mysql_M_instance", sidinfo, buffer_pool, lvsize)
-                else:
-                    sextra_vars=extra_var_create(host, sextra_vars, "mysql_S_instance", sidinfo, buffer_pool, lvsize)
-                print mextra_vars,sextra_vars
+            host.idle=False
+            host.save()
+            if 'M' in sidinfo.sidname.replace(sidinfo.appname,""):
+                mextra_vars=extra_var_create(host, mextra_vars, "mysql_M_instance", sidinfo, buffer_pool, lvsize)
             else:
-                return redirect("/hd_ansible/mysql/sidlist/"+"当前主机有其他任务，请稍等！".decode('utf-8'))
+                sextra_vars=extra_var_create(host, sextra_vars, "mysql_S_instance", sidinfo, buffer_pool, lvsize)
+            print mextra_vars,sextra_vars
         return redirect('/hd_mesos/tasklist.html')
     
 @csrf_exempt
@@ -326,7 +320,20 @@ def up_memory_check(request):
             return HttpResponse(0)
         else:
             return HttpResponse(1)
-
+        
+@csrf_exempt
+@login_check
+def up_hostidle_check(request):
+    if request.method == 'POST':
+        appname = request.POST['AppName']
+        hostip_list = SidInfo.objects.filter(appname=appname).values_list("hostip")
+        for i in hostip_list:           
+            hostinfo  = HostInfo.objects.get(ip="".join(i))
+            if not hostinfo.idle:
+                return HttpResponse(0)
+        return HttpResponse(1)
+        
+        
 @login_check
 def mysql_dump(request):
     if request.method == 'GET':

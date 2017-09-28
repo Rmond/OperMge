@@ -306,7 +306,7 @@ jQuery.validator.addMethod("asynchostip", function (value, element) {
    var result = false;
    $.ajaxSetup({async:false});
    var param = {HostIP:value};
-   $.post("hostipcheck",param,function(data){
+   $.post("/hd_common/hostipchk",param,function(data){
 	   result = (1 == data);
    });
    $.ajaxSetup({async:true});

@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^appnamecheck',views.appname_check,name="appname_check"),
     url(r'^upvginfocheck',views.up_vginfo_check,name="up_vginfo_check"),
     url(r'^upmemorycheck',views.up_memory_check,name="up_memory_check"),
+    url(r'^uphostidlechk',views.up_hostidle_check,name="up_hostidle_check"),
     url(r'^sqllist$',views.sql_list,name="sql_list"),
     url(r'^sqladd$',views.sql_add,name="sql_add"),
     url(r'^sqledit/(?P<id>\d+)',views.sql_add,name="sql_edit"),

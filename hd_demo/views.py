@@ -1,29 +1,50 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
-from hd_mesos.models import Users
-from rest_framework import viewsets
-from serializers import UserSerializer
-from rest_framework import status
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from rest_framework.request import Request
+from django.contrib.auth.hashers import make_password, check_password
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.renderers import JSONRenderer
+from rest_framework import status
+from rest_framework import viewsets
+from rest_framework.authentication import SessionAuthentication
+from auth import CustomAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.parsers import JSONParser
-from django.contrib.auth.hashers import make_password
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.renderers import JSONRenderer
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     """
-#     API endpoint that allows users to be viewed or edited..
-#     """
-#     queryset = Users.objects.all()
-#     serializer_class = UserSerializer
+from hd_mesos.models import Users
+from serializers import UserSerializer
+
+
+class LoginViewSet(APIView):
+    """
+    API endpoint that allows users to be viewed or edited..
+    """
+    users = Users.objects.all()
+    serializer_class = UserSerializer
+    
+    def post(self, request):
+        try:
+            username = request.data.get('username')
+            password = request.data.get('password')
+            user = Users.objects.get(username=username)
+            if check_password(user.password,password):
+                print user
+                serializer = UserSerializer({'id': user.id, 'username': user.username})
+                return Response(serializer.data)
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        except Users.DoesNotExist:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 @csrf_exempt
 @api_view(['GET','POST'])
+@authentication_classes((SessionAuthentication, CustomAuthentication))
+@permission_classes((IsAuthenticated,))
 def user_list(request,format=None):#用户列表展示
     if request.method == 'GET':
         users = Users.objects.all()
@@ -42,6 +63,8 @@ def user_list(request,format=None):#用户列表展示
     
 @csrf_exempt
 @api_view(['GET','PUT','DELETE'])
+@authentication_classes((SessionAuthentication, CustomAuthentication))
+@permission_classes((IsAuthenticated,))
 def user_detail(request,username,format=None):#用户详细信息展示
     """
     Retrieve, update or delete a snippet instance.

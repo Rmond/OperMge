@@ -45,7 +45,7 @@
 							<td>{{sidinfo.buffer_pool}}G</td>
 							<td>{{sidinfo.port}}</td>
 							<td><a data-toggle="modal" data-target="#sidinfoModal" class="look">详情</a>
-							<a data-toggle="modal" data-target="#sidupdateModal" class="update">升级</a>
+							<a class="update" onclick="Show_Upmodal(this)">升级</a>
 							<a href="javascript:void(0);" class="delete">删除</a></td>
 						</tr>
 						{% endfor %}
@@ -79,7 +79,7 @@
 								<label for="mhostip" class="col-md-4 control-label">主库IP</label>
 								 <div class="col-md-6">
 								 <select class="form-control" name="Mhostip" id="mhostip" onchange="hostinfo_get($(this).children('option:selected').val(),'#m')" required
-										data-msg-required="请选择">
+										data-rule-hostidle="true" data-msg-required="请选择">
 										<option value>===Master==</option>
 									</select>
 								 </div>
@@ -108,7 +108,7 @@
 								<label for="shostip" class="col-md-4 control-label">从库IP</label>
 								 <div class="col-md-6">
 								 <select class="form-control" name="Shostip" id="shostip" onchange="hostinfo_get($(this).children('option:selected').val(),'#s')" required
-										data-msg-required="请选择">
+										data-rule-hostidle="true" data-msg-required="请选择">
 										<option value>===Slave===</option>
 									</select>
 								 </div>
@@ -470,7 +470,27 @@ function Add_Prgbar(flag,obj){
         }else{
        	 $(flag+"_vg_prgbar").addClass("bg-green");
         }
-}
+};
+
+function Show_Upmodal(obj){
+	var appname = $(obj).parents('tr').children().eq(1).text();
+	 $.ajax(
+				{
+					type: "POST",
+		        url: "/hd_mysql/uphostidlechk",
+		        data: {
+		        	"AppName":appname,
+		        	},
+		      success: function(data){
+		    	 if (data==0){
+		    		 alert("主机正忙，请稍后!");
+		    	 }
+		    	 else{
+		    		 $('#sidupdateModal').modal('show');
+		         }
+		      },
+				});
+};
 
 $("#sidadd").validate({
     submitHandler: function() {
@@ -561,5 +581,15 @@ jQuery.validator.addMethod("appname", function (value, element) {
 	   return result;
 }, "项目名已存在!");
 
+jQuery.validator.addMethod("hostidle", function (value, element) {
+	   var result = false;
+	   $.ajaxSetup({async:false});
+	   var param = {"HostIP":value};
+	   $.post("{% url 'hd_common:hostidle_check' %}",param,function(data){
+		   result = (1 == data);
+	   });
+	   $.ajaxSetup({async:true});
+	   return result;
+}, "主机正在忙，请稍后!");
 </script>
 {% endblock %}
